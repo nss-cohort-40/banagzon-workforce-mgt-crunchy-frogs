@@ -26,6 +26,10 @@ INSERT INTO hrapp_employee
 VALUES
     (null, 'Zach', 'Nicholson', '2020-05-02', FALSE, 3);
 
+INSERT INTO hrapp_employee
+VALUES
+    (null, 'Tanner', 'Brainard', '2020-05-02', FALSE, 4);
+
 select
     d.id,
     d.dept_name,
@@ -33,3 +37,7 @@ select
     e.department_id
 from hrapp_department d
     join hrapp_employee e on d.id = e.department_id;
+
+DELETE FROM hrapp_department
+where id = 5;
+
