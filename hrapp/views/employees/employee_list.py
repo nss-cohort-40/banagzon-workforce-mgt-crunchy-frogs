@@ -68,7 +68,6 @@ def employee_list(request):
             VALUES(?, ?, ?, ?, ?);
             """, (form_data['first_name'], form_data['last_name'], form_data['start_date'], bool(int(form_data['is_supervisor'])), form_data['department_id']))
 
-            print("COMPUTER_ID", form_data["computer_id"])
             if form_data["computer_id"] != "":
                 db_cursor.execute("""
                 SELECT
