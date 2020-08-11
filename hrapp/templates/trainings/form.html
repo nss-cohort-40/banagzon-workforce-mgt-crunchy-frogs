@@ -3,11 +3,7 @@
 {% block content %}
   <h1>Add / Update Training Program</h1>
 
-  {% if training.id is not None %}
-      <form action="{% url 'hrapp:trainingprogram' training.id %}" method="post">
-  {% else %}
-      <form action="{% url 'hrapp:trainingprogram' %}" method="post">
-  {% endif %}
+      <form action="{% url 'hrapp:trainings_list' %}" method="post">
       {% csrf_token %}
       <fieldset>
           <label for="title">Title: </label>

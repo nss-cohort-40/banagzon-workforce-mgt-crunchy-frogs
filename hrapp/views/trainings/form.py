@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from hrapp.models import TrainingProgram
 from ..connection import Connection
 
-
 def get_trainings():
     with sqlite3.connect(Connection.db_path) as conn:
         conn.row_factory = sqlite3.Row
@@ -28,21 +27,6 @@ def training_form(request):
         trainings = get_trainings()
         template = 'trainings/form.html'
         context = {
-            'all_trainings': trainings
-        }
-
-        return render(request, template, context)
-
-@login_required
-def training_edit_form(request, training_id):
-
-    if request.method == 'GET':
-        training = get_training(training_id)
-        trainings = get_trainings()
-
-        template = 'trainings/form.html'
-        context = {
-            'training': training,
             'all_trainings': trainings
         }
 
