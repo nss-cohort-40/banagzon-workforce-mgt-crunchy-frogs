@@ -28,8 +28,9 @@ def department_details(request, department_id):
     if request.method == 'GET':
         department = get_department(department_id)
         employees = []
-        employees = Employee.objects.all(department_id=department.id)
-        template = 'departments/department_detail.html'
+        print(department)
+        employees = Employee.objects.filter(department_id=department_id)
+        template = 'departments/department_details.html'
         context = {
             'department': department,
             'employees': employees

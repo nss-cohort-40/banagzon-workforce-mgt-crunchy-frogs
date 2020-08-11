@@ -28,26 +28,17 @@ VALUES
 
 INSERT INTO hrapp_employee
 VALUES
-    (null, 'Kirk', 'Suddath', '2020-05-02', FALSE, 10);
+    (null, 'Tanner', 'Brainard', '2020-05-02', FALSE, 4);
 
 select
     d.id,
     d.dept_name,
-    d.budget
-from hrapp_department d;
-
-
-DELETE FROM hrapp_department
-where id = 9;
-
-SELECT
-    d.id,
-    d.dept_name,
     d.budget,
-    e.first,
-    e.last,
-    e.department_id
-FROM hrapp_department d
+    e.department_id,
+    e.first_name,
+    e.last_name
+from hrapp_department d
     join hrapp_employee e on d.id = e.department_id;
-        
+
+
 
