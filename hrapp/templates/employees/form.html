@@ -1,0 +1,35 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+
+<h3>Add an Employee</h3>
+<form action="{% url 'hrapp:employee_list' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <label for="first_name">First Name: </label>
+        <input id="first_name" type="text" name="first_name" value="">
+    </fieldset>
+    <fieldset>
+        <label for="last_name">Last Name: </label>
+        <input id="last_name" type="text" name="last_name" value="">
+    </fieldset>
+    <fieldset>
+        <label for="start_date">Start Date: </label>
+        <input id="start_date" type="date" name="start_date" value="">
+    </fieldset>
+    <label for="is_supervisor">Supervisor: </label>
+    <select id="is_supervisor" type="text" name="is_supervisor">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+    <label for="department_id">Department: </label>
+    <select id="department_id" type="text" name="department_id">
+        {% for department in departments %}
+        <option value="{{ department.id }}">
+            {{ department.dept_name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Create"/>
+</form>
+
+{% endblock content %}
