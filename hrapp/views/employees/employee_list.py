@@ -68,23 +68,24 @@ def employee_list(request):
             VALUES(?, ?, ?, ?, ?);
             """, (form_data['first_name'], form_data['last_name'], form_data['start_date'], bool(int(form_data['is_supervisor'])), form_data['department_id']))
 
-            db_cursor.execute("""
-            SELECT
-                e.id,
-                e.first_name,
-                e.last_name,
-                e.start_date,
-                e.is_supervisor
-            FROM hrapp_employee e
-            ORDER BY e.id DESC;
-            """)
+            if "computer_id" in form_data:
+                db_cursor.execute("""
+                SELECT
+                    e.id,
+                    e.first_name,
+                    e.last_name,
+                    e.start_date,
+                    e.is_supervisor
+                FROM hrapp_employee e
+                ORDER BY e.id DESC;
+                """)
 
-            dataset = db_cursor.fetchall()
+                dataset = db_cursor.fetchall()
 
-            db_cursor.execute("""
-            INSERT INTO hrapp_employeecomputer (computer_id, employee_id, assign_date, unassign_date)
-            VALUES(?, ?, ?, ?);
-            """, (form_data['computer_id'], dataset[0][0], datetime.date.today(), datetime.date.today() + datetime.timedelta(days=90)))
+                db_cursor.execute("""
+                INSERT INTO hrapp_employeecomputer (computer_id, employee_id, assign_date, unassign_date)
+                VALUES(?, ?, ?, ?);
+                """, (form_data['computer_id'], dataset[0][0], datetime.date.today(), datetime.date.today() + datetime.timedelta(days=90)))
 
             
 
