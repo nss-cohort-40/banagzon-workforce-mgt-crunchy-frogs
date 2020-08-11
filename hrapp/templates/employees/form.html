@@ -17,18 +17,33 @@
         <label for="start_date">Start Date: </label>
         <input id="start_date" type="date" name="start_date" value="">
     </fieldset>
-    <label for="is_supervisor">Supervisor: </label>
-    <select id="is_supervisor" type="text" name="is_supervisor">
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select>
-    <label for="department_id">Department: </label>
-    <select id="department_id" type="text" name="department_id">
-        {% for department in departments %}
-        <option value="{{ department.id }}">
-            {{ department.dept_name }}</option>
-        {% endfor %}
-    </select>
+    <p>
+        <label for="is_supervisor">Supervisor: </label>
+        <select id="is_supervisor" type="text" name="is_supervisor">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select>
+    </p>
+    <p>
+        <label for="department_id">Department: </label>
+        <select id="department_id" type="text" name="department_id">
+            {% for department in departments_computers.departments %}
+            <option value="{{ department.id }}">
+                {{ department.dept_name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+    <p>
+        <label for="computer_id">Computer: </label>
+        <select id="computer_id" type="text" name="computer_id">
+            {% for computer in departments_computers.computers %}
+                {% if computer.connection_id == None %}
+                    <option value="{{ computer.id }}">
+                        {{ computer.make }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </p>
     <input type="submit" value="Create"/>
 </form>
 
