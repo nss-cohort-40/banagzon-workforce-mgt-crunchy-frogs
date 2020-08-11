@@ -18,6 +18,7 @@ def trainings_list(request):
                 t.end_date,
                 t.capacity
             from hrapp_trainingProgram t
+            where t.start_date > (select date('now'))
             """)
 
             all_trainings = []
