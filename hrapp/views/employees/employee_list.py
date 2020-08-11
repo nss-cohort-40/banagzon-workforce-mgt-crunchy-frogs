@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, reverse
 from hrapp.models import Employee
 from ..Connection import Connection
 
+
 def employee_list(request):
     if request.method == 'GET':
         with sqlite3.connect(Connection.db_path) as conn:
