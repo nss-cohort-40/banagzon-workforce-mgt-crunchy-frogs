@@ -18,7 +18,7 @@ def department_list(request):
                 d.budget,
                 e.department_id
             from hrapp_department d
-                join hrapp_employee e on d.id = e.department_id;
+                left join hrapp_employee e on d.id = e.department_id;
             """)
 
             all_departments = []
@@ -34,6 +34,7 @@ def department_list(request):
                 employee.department_id = row['department_id']
                 department.count = len(
                     Employee.objects.filter(department_id=department.id))
+
                 all_departments.append(department)
 
         template = 'departments/department_list.html'
