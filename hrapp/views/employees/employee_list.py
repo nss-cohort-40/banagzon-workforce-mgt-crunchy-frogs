@@ -5,7 +5,7 @@ from ..connection import Connection
 
 def employee_list(request):
     if request.method == 'GET':
-        with sqlite3.connect(Connection) as conn:
+        with sqlite3.connect(Connection.db_path) as conn:
             conn.row_factory = sqlite3.Row
             db_cursor = conn.cursor()
 
