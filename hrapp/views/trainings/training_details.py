@@ -68,7 +68,7 @@ def training_details(request, training_id):
                 (
                     form_data['title'], form_data['description'],
                     form_data['start_date'], form_data['end_date'],
-                    form_data["capacity"], training_id,
+                    form_data['capacity'], training_id,
                 ))
 
             return redirect(reverse('hrapp:trainings_list'))
