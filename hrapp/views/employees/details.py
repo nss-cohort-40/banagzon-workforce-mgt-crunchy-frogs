@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from hrapp.models import Employee, Department, Computer, EmployeeComputer, TrainingProgram, EmployeeTrainingProgram
 from ..connection import Connection
 
+
 def create_employee(cursor, row):
     _row = sqlite3.Row(cursor, row)
 
@@ -24,7 +25,6 @@ def create_employee(cursor, row):
     # employee.training_programs = []
     employee.department = department
     employee.computer = computer
-
 
     return employee
 
@@ -83,33 +83,3 @@ def employee_details(request, employee_id):
         }
 
         return render(request, template, context)
-
-
-
-
-
-
-
-
-
-
-# def get_training_programs(employee_id):
-#     with sqlite3.connect(Connection.db_path) as conn:
-#         conn.row_factory = sqlite3.Row(cursor, row)
-#         db_cursor = conn.cursor()
-
-#         db_cursor.execute("""
-#         select
-#             e.id e_id
-#             tp.id tp_id,
-#             tp.name tp_name,
-#             etp.id etp_id,
-#             etp.employee_id,
-#             etp.training_program_id
-#         from hrapp_employee e,
-#         left join hrapp_employeetrainingprogram etp on etp.employee_id = e.id
-#         left join hrapp_trainingprogram tp on training_program_id = tp_.id,
-#         where e_id = ?
-#         """, (employee_id,))
-
-#         return db_cursor.fetchall()
