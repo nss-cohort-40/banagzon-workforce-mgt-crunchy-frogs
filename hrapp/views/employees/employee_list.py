@@ -2,7 +2,7 @@ import sqlite3
 import datetime
 from django.shortcuts import render, redirect, reverse
 from hrapp.models import Employee
-from ..Connection import Connection
+from ..connection import Connection
 
 
 def employee_list(request):
@@ -68,7 +68,7 @@ def employee_list(request):
             VALUES(?, ?, ?, ?, ?);
             """, (form_data['first_name'], form_data['last_name'], form_data['start_date'], bool(int(form_data['is_supervisor'])), form_data['department_id']))
 
-            if "computer_id" in form_data:
+            if form_data["computer_id"] != "":
                 db_cursor.execute("""
                 SELECT
                     e.id,
@@ -86,7 +86,5 @@ def employee_list(request):
                 INSERT INTO hrapp_employeecomputer (computer_id, employee_id, assign_date, unassign_date)
                 VALUES(?, ?, ?, ?);
                 """, (form_data['computer_id'], dataset[0][0], datetime.date.today(), datetime.date.today() + datetime.timedelta(days=90)))
-
-            
 
         return redirect(reverse('hrapp:employee_list'))
