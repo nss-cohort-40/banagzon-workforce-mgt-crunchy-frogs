@@ -4,6 +4,7 @@ from .trainings.trainings_list_past import trainings_list_past
 from .trainings.form import training_form
 from .trainings.form import training_edit_form
 from .trainings.training_details import training_details
+from .trainings.training_details_past import training_details_past
 from .home import home
 from .auth.logout import logout_user
 from .employees.form import employee_form
