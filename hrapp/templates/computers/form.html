@@ -1,0 +1,39 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+
+<h3>Add an Employee</h3>
+<form action="{% url 'hrapp:computer_list' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <label for="make">Make: </label>
+        <input id="make" type="text" name="make" value="">
+    </fieldset>
+    <fieldset>
+        <label for="manufacturer">Manufacturer: </label>
+        <input id="manufacturer" type="text" name="manufacturer" value="">
+    </fieldset>
+    <fieldset>
+        <label for="purchase_date">Purchase Date: </label>
+        <input id="purchase_date" type="date" name="purchase_date" value="">
+    </fieldset>
+    <fieldset>
+        <label for="decommission_date">Decommission Date: </label>
+        <input id="decommission_date" type="date" name="decommission_date" value="">    
+    </fieldset>
+    <p>
+        <label for="employee_id">Assign to Employee: </label>
+        <select id="employee_id" type="text" name="employee_id">
+            <option value="">None</option>
+            {% for employee in employees %}
+            {% if employee.connection_id == None %}
+            <option value="{{ employee.id }}">
+                {{ employee.first_name }} {{ employee.last_name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </p>
+    <input type="submit" value="Create"/>
+</form>
+
+{% endblock content %}
