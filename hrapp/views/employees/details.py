@@ -19,20 +19,29 @@ def create_employee(cursor, row):
 
     computer = Computer()
     computer.id = _row["c_id"]
-    computer.make = _row["c_make"]
+    computer.make = _row["make"]
 
-    training_program = TrainingProgram()
-    training_program.id = _row["tp_id"]
-    training_program.title = _row["tp_title"]
-
+    # employee.training_programs = []
     employee.department = department
-    employee.training_program = training_program
+    employee.computer = computer
+
 
     return employee
 
-@login_required
+
+def get_training_programs(employee_id):
+    training_programs_ids = []
+    training_programs_ids = EmployeeTrainingProgram.objects.filter(employee_id=employee_id)
+    training_programs = []
+    for e in training_programs_ids:
+        training_program = TrainingProgram.objects.filter(id=e.training_program_id).values()
+        for i in training_program:
+            training_programs.append(i["title"])
+
+    return training_programs
+
+
 def get_employee(employee_id):
-    if request.method == 'GET':
         with sqlite3.connect(Connection.db_path) as conn:
             conn.row_factory = create_employee
             db_cursor = conn.cursor()
@@ -48,18 +57,59 @@ def get_employee(employee_id):
                 ec.employee_id,
                 d.id as d_id,
                 d.dept_name as d_name,
-                c.id,
-                c.make,
-                etp.id,
-                etp.employee_id,
-                etp.training_program_id,
+                c.id as c_id,
+                c.make
             from hrapp_employee e
             left join hrapp_department d on d.id = e.department_id
             left join hrapp_employeecomputer ec on ec.employee_id = e.id
-            left join hrapp_computer c on ec.computer_id = c.id;
+            left join hrapp_computer c on ec.computer_id = c_id
             left join hrapp_employeetrainingprogram etp on etp.employee_id = e.id
             left join hrapp_trainingprogram tp on etp.training_program_id = tp.id
-            """)
-            # TODO: Check the training_program_id
+            where e.id = ?
+            """, (employee_id,))
 
             return db_cursor.fetchone()
+
+
+@login_required
+def employee_details(request, employee_id):
+    if request.method == 'GET':
+        employee = get_employee(employee_id)
+        training_programs = get_training_programs(employee_id)
+        template = 'employees/details.html'
+        context = {
+            'employee': employee,
+            'training_programs': training_programs
+        }
+
+        return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# def get_training_programs(employee_id):
+#     with sqlite3.connect(Connection.db_path) as conn:
+#         conn.row_factory = sqlite3.Row(cursor, row)
+#         db_cursor = conn.cursor()
+
+#         db_cursor.execute("""
+#         select
+#             e.id e_id
+#             tp.id tp_id,
+#             tp.name tp_name,
+#             etp.id etp_id,
+#             etp.employee_id,
+#             etp.training_program_id
+#         from hrapp_employee e,
+#         left join hrapp_employeetrainingprogram etp on etp.employee_id = e.id
+#         left join hrapp_trainingprogram tp on training_program_id = tp_.id,
+#         where e_id = ?
+#         """, (employee_id,))
+
+#         return db_cursor.fetchall()
