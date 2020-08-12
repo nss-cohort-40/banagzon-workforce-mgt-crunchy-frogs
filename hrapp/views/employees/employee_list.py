@@ -87,6 +87,4 @@ def employee_list(request):
                 VALUES(?, ?, ?, ?);
                 """, (form_data['computer_id'], dataset[0][0], datetime.date.today(), datetime.date.today() + datetime.timedelta(days=90)))
 
-            
-
         return redirect(reverse('hrapp:employee_list'))

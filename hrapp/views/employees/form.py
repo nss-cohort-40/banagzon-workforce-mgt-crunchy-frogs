@@ -38,11 +38,12 @@ def get_computers():
 
         return db_cursor.fetchall()
 
+
 def employee_form(request):
     if request.method == 'GET':
         departments_computers = {
-            "departments" : get_departments(),
-            "computers" : get_computers()
+            "departments": get_departments(),
+            "computers": get_computers()
         }
         template = "employees/form.html"
         context = {

@@ -34,10 +34,11 @@ select
     d.id,
     d.dept_name,
     d.budget,
-    e.department_id
+    e.department_id,
+    e.first_name,
+    e.last_name
 from hrapp_department d
     join hrapp_employee e on d.id = e.department_id;
 
-DELETE FROM hrapp_department
-where id = 5;
+
 
