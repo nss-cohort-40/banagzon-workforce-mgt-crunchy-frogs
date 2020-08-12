@@ -4,7 +4,7 @@ from django.urls import reverse
 from hrapp.models import TrainingProgram
 from ..connection import Connection
 
-def trainings_list(request):
+def trainings_list_past(request):
     if request.method == 'GET':
         with sqlite3.connect(Connection.db_path) as conn:
             conn.row_factory = sqlite3.Row
@@ -19,10 +19,10 @@ def trainings_list(request):
                 t.end_date,
                 t.capacity
             from hrapp_trainingProgram t
-            where t.start_date >= (select date('now'))
+            where t.start_date < (select date('now'))
             """)
 
-            trainings = []
+            past_trainings = []
             dataset = db_cursor.fetchall()
 
             for row in dataset:
@@ -34,31 +34,11 @@ def trainings_list(request):
                 training.end_date = row['end_date']
                 training.capacity = row['capacity']
 
-                trainings.append(training)
+                past_trainings.append(training)
 
-            template = 'trainings/trainings_list.html'
+            template = 'trainings/trainings_list_past.html'
             context = {
-                'all_trainings': trainings
+                'past_trainings': past_trainings
             }
 
             return render(request, template, context)
-
-    elif request.method == 'POST':
-        form_data = request.POST
-
-        with sqlite3.connect(Connection.db_path) as conn:
-            db_cursor = conn.cursor()
-
-            db_cursor.execute("""
-            INSERT INTO hrapp_trainingProgram
-            (
-                title, description, start_date,
-                end_date, capacity
-            )
-            VALUES (?, ?, ?, ?, ?)
-            """,
-            (form_data['title'], form_data['description'],
-                form_data['start_date'], form_data['end_date'],
-                form_data["capacity"]))
-
-        return redirect(reverse('hrapp:trainings_list'))
