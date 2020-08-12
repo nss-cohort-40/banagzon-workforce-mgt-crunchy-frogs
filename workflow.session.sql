@@ -1,0 +1,1 @@
+DELETE from hrapp_employee where id = 3;
