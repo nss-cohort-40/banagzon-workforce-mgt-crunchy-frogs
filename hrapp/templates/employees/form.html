@@ -2,8 +2,14 @@
 
 {% block content %}
 
+
+{% if employee.id is not None %}
+<h3>Edit {{employee.first_name}} {{employee.last_name}}</h3>
+    <form action="{% url 'hrapp:book' employee.id %}" method="post">
+{% else %}
 <h3>Add an Employee</h3>
 <form action="{% url 'hrapp:employee_list' %}" method="post">
+{% endif %}
     {% csrf_token %}
     <fieldset>
         <label for="first_name">First Name: </label>

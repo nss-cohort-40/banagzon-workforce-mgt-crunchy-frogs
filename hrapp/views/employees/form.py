@@ -51,3 +51,20 @@ def employee_form(request):
         }
 
         return render(request, template, context)
+
+
+def employee_edit_form(request, employee_id):
+
+    if request.method == 'GET':
+        employee = get_employee(employee_id)
+        departments = Department.objects.all()
+        computers = Computer.objects.all()
+
+        template = 'employees/form.html'
+        context = {
+            'employee': employee,
+            'departments': departments,
+            'computers': computers
+        }
+
+        return render(request, template, context)
