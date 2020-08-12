@@ -8,11 +8,11 @@
 {% for department in all_departments %}
    {% if department.count == 1 %}
    <li>
-        <p>{{ department.dept_name }} has {{department.count}} employee.</p>
+        <p><a href=" {% url 'hrapp:department_details' department.id %}">{{ department.dept_name }}</a> has {{department.count}} employee.</p>
     </li>
    {% else %}
     <li>
-        <p>{{ department.dept_name }} has {{department.count}} employees.</p>
+        <p><a href=" {% url 'hrapp:department_details' department.id %}">{{ department.dept_name }}</a> has {{department.count}} employees.</p>
     </li>
     {% endif %}
 {% endfor %}
