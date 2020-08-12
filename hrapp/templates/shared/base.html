@@ -43,6 +43,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'hrapp:trainings_list' %}">Training Programs</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'hrapp:computer_list' %}">Computers</a>
+                </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'hrapp:logout' %}">Logout</a>

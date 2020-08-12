@@ -1,0 +1,41 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> {% if computer.manufacturer != None %} {{ computer.manufacturer }} {% endif %} {{computer.make}}</h1>
+{% if computer.first_name != None and computer.last_name != None %}<p>Assigned to {{computer.first_name}} {{ computer.last_name }} 
+ {% if computer.dept_name != None %}({{computer.dept_name}}){% endif %}</p>{% endif %}
+
+{% if computer.assign_date != None %}
+<p>Assigned on {{ computer.assign_date }}</p>
+{% endif %}
+{% if computer.unassign_date != None %}
+<p>Unassigned on {{ computer.unassign_date }}</p>
+{% endif %}
+{% if computer.purchase_date != None %}
+<p>Bought on {{ computer.purchase_date }}</p>
+{% endif %}
+{% if computer.decommission_date != None %}
+<p>Decommission on {{ computer.decommission_date }}</p>
+{% endif %}
+
+
+<input type="submit" value="Delete" id="delete"/>
+
+
+<dialog id="deleteText">
+        <div id="deleteMessage"></div>
+        <form action="{% url 'hrapp:computer_details' computer.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" id="actual_method" name="actual_method" value="DELETE" />
+        <input type="submit" value="Yes"/>
+        </form>
+        <input id="closeDeleteText" type="submit" value="No"/>
+</dialog>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'scripts/confirm.js' %}"></script>
+{% endblock scripts %}
