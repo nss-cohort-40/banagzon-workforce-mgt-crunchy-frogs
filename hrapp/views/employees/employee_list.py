@@ -2,7 +2,7 @@ import sqlite3
 import datetime
 from django.shortcuts import render, redirect, reverse
 from hrapp.models import Employee
-from ..Connection import Connection
+from ..connection import Connection
 
 
 def employee_list(request):

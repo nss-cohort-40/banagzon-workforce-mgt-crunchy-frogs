@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import sqlite3
-from ..Connection import Connection
+from ..connection import Connection
 
 
 def get_departments():
