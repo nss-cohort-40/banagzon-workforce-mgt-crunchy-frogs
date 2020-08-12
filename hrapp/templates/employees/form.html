@@ -36,6 +36,7 @@
     <p>
         <label for="computer_id">Computer: </label>
         <select id="computer_id" type="text" name="computer_id">
+            <option value="">None</option>
             {% for computer in departments_computers.computers %}
                 {% if computer.connection_id == None %}
                     <option value="{{ computer.id }}">
