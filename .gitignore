@@ -29,6 +29,7 @@ media/
 *.db
 *.pid
 .sql
+.session.sql
 
 # django migrations
 migrations
