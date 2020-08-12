@@ -1,0 +1,23 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+    <section id="training-details">
+        <h1>{{ training.title }}</h1>
+        <h3>{{ training.description }}</h3>
+
+        <p>Starts: {{ training.start_date }}</p>
+        <p>Ends: {{ training.end_date }}</p>
+        <p>Max capacity: {{ training.capacity }}</p>
+    </section>
+
+    <section id="training-actions">
+        <form action="{% url 'hrapp:training' training.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="actual_method" value="DELETE">
+            <button>Delete</button>
+        </form>
+
+
+    </section>
+
+{% endblock content %}
