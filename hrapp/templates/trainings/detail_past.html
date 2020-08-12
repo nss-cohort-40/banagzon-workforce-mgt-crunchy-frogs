@@ -1,0 +1,13 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+    <section id="training-details">
+        <h1>{{ training.title }}</h1>
+        <h3>{{ training.description }}</h3>
+
+        <p>Started: {{ training.start_date }}</p>
+        <p>Ended: {{ training.end_date }}</p>
+        <p>Max capacity: {{ training.capacity }}</p>
+    </section>
+
+{% endblock content %}

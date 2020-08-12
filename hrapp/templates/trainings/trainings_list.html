@@ -8,11 +8,8 @@
 <ol>
     {% for training in all_trainings %}
     <li>
-        <p>{{ training.title }}</p>
+        <a class="training_title" href="{% url 'hrapp:training' training.id %}">{{ training.title }}</a>
         <p>Description: {{ training.description }}</p>
-        <p>Start Date: {{ training.start_date }}</p>
-        <p>End Date: {{ training.end_date }}</p>
-        <p>Capacity: {{ training.capacity }}</p>
     </li>
     {% endfor %}
 </ol>

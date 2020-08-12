@@ -1,0 +1,21 @@
+
+{% extends 'shared/base.html' %}
+
+{% block content %}
+<h1>Employee Details</h1>
+<section id="employee-details">
+    <h3>Name: {{ employee.first_name }} {{ employee.last_name }}</h3>
+    <h5>Department: {{ employee.department.name }}</h5>
+
+    <h5>Computer: {{ employee.computer.make }}</h5>
+    <div>
+        <h5>Training Programs:</h5>
+        <ul>
+        {% for training_program in training_programs %}
+            <p>{{ training_program.title }}</p>
+        {% endfor %}
+        </ul>
+    
+    </div>
+</section>
+{% endblock content %}

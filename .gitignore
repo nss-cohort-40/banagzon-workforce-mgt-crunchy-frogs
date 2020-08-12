@@ -29,14 +29,10 @@ media/
 *.db
 *.pid
 .sql
+.session.sql
 
 # django migrations
 migrations
 
 #db location
 hrapp/views/connection.py
-
-TODO
-
-/connection.py
-/Connection.py

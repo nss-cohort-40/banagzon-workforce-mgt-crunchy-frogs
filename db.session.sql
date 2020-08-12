@@ -40,5 +40,10 @@ select
 from hrapp_department d
     join hrapp_employee e on d.id = e.department_id;
 
+select e.id, e.first_name, e.last_name, e.department_id,
+    d.dept_name, d.id, c.make, c.id, t.title, t.id
+from hrapp_employee
+    join  
+
 
 
