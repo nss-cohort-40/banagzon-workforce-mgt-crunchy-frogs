@@ -1,6 +1,6 @@
 import sqlite3
 from django.shortcuts import render, redirect, reverse
-from ..Connection import Connection
+from ..connection import Connection
 from hrapp.models import Computer
 
 def computer_list(request):

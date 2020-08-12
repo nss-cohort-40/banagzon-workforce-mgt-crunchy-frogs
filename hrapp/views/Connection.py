@@ -1,2 +1,2 @@
 class Connection:
-    db_path = "/home/zach/workspace/group_exercises/banagzon-workforce-mgt-crunchy-frogs/db.sqlite3"
+    db_path = "/home/useradd/workspace/python/group-projects/banagzon-workforce-mgt-crunchy-frogs/db.sqlite3"
