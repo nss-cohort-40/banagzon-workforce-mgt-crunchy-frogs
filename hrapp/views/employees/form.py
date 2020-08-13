@@ -60,16 +60,29 @@ def employee_edit_form(request, employee_id):
         employee = Employee.objects.filter(id=employee_id)
         departments = Department.objects.all()
         department = Department.objects.filter(id=employee[0].department_id)
-        computer = EmployeeComputer.objects.filter(employee_id=employee[0].id)
-        computer = Computer.objects.filter(id=computer[0].computer_id)
+        computer = len(EmployeeComputer.objects.filter(
+            employee_id=employee[0].id))
         template = 'employees/form.html'
-        context = {
-            'employee': employee[0],
-            'department': department[0],
-            'departments': departments,
-            'computers': get_computers(),
-            'start_date': str(employee[0].start_date),
-            'computer': computer[0]
-        }
-
+        if computer > 0:
+            EmployeeComputer.objects.filter(employee_id=employee[0].id)
+            computer = EmployeeComputer.objects.filter(
+                employee_id=employee[0].id)
+            computer = Computer.objects.filter(id=computer[0].computer_id)
+            context = {
+                'employee': employee[0],
+                'department': department[0],
+                'departments': departments,
+                'computers': get_computers(),
+                'start_date': str(employee[0].start_date),
+                'computer': computer[0]
+            }
+        else:
+            context = {
+                'employee': employee[0],
+                'department': department[0],
+                'departments': departments,
+                'computers': get_computers(),
+                'start_date': str(employee[0].start_date),
+                'computer': None
+            }
         return render(request, template, context)

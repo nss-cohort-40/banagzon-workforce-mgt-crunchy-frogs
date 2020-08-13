@@ -71,15 +71,18 @@
     <p>
         <label for="computer_id">Computer: </label>
         <select id="computer_id" type="text" name="computer_id">
+        {% if employee.id is None %}
+            <option value="">None</option>
+        {% endif %}
              {% if employee.id is not None %}
                 <option selected value={{computer.id}}>{{computer.make}}</option>
+                <option value="">None</option>
              {% for computer in computers %}
                 {% if computer.connection_id == None %}
                     <option value="{{ computer.id }}">
                         {{ computer.make }}</option>
                 {% endif %}
             {% endfor %}
-            <option value="">None</option>
             {% endif %}
             {% for computer in departments_computers.computers %}
                 {% if computer.connection_id == None %}
