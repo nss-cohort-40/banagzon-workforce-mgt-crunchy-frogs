@@ -1,0 +1,21 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+
+<h3>Assign {{ employee_training.employee.first_name }} {{ employee_training.employee.last_name }} to a training program</h3>
+<form action="{% url 'hrapp:assign_employee' employee_training.employee.id %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="program_id">Program: </label>
+        <select id="program_id" type="text" name="program_id">
+            <option value="">None</option>
+            {% for program in employee_training.training %}
+                    <option value="{{ program.id }}">
+                        {{ program.title }}</option>
+            {% endfor %}
+        </select>
+    </p>
+    <input type="submit" value="Create"/>
+</form>
+
+{% endblock content %}
