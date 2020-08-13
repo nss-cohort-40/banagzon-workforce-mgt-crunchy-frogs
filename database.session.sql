@@ -24,4 +24,4 @@ SELECT
     e.last_name
 FROM hrapp_trainingprogram t
 LEFT JOIN hrapp_employeetrainingprogram et ON et.training_program_id = t.id
-LEFT JOIN hrapp_employee e ON et.employee_id = e.id
+LEFT JOIN hrapp_employee e ON et.employee_id = e.id;

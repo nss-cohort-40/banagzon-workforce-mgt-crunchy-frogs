@@ -11,7 +11,7 @@ def get_training(training_id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        SELECT
+        SELECT DISTINCT
             t.id training_id,
             t.title,
             t.description,
