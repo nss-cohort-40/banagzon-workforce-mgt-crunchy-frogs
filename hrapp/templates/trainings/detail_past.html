@@ -10,8 +10,10 @@
         <p>Max capacity: {{ training.capacity }}</p>
 
         <p>Attendees:</p>
-        {% for each in training %}
-        <p>{{ each.first_name }} {{ each.last_name }}</p>
+        {% for each in employees %}
+            {% if each.first_name != None %}
+                <p>{{ each.first_name }} {{ each.last_name }}</p>
+            {% endif %}
         {% endfor %}
     </section>
 

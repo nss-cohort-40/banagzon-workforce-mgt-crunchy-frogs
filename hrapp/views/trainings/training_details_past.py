@@ -5,19 +5,14 @@ from django.contrib.auth.decorators import login_required
 from hrapp.models import TrainingProgram, Employee
 from ..connection import Connection
 
-def get_training(training_id):
+def get_training_employees(training_id):
     with sqlite3.connect(Connection.db_path) as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        SELECT DISTINCT
+        SELECT
             t.id training_id,
-            t.title,
-            t.description,
-            t.start_date,
-            t.end_date,
-            t.capacity,
             et.id,
             et.employee_id,
             et.training_program_id,
@@ -32,10 +27,29 @@ def get_training(training_id):
 
         return db_cursor.fetchall()
 
+def get_training(training_id):
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            t.id training_id,
+            t.title,
+            t.description,
+            t.start_date,
+            t.end_date,
+            t.capacity
+        FROM hrapp_trainingprogram t
+        WHERE t.id = ?
+        """, (training_id,))
+
+        return db_cursor.fetchone()
+
 @login_required
 def training_details_past(request, training_id):
     if request.method == 'GET':
         training = get_training(training_id)
+        employees = get_training_employees(training_id)
         template_name = 'trainings/detail_past.html'
-        print(training)
-        return render(request, template_name, {'training': training})
+        return render(request, template_name, {'training': training, 'employees': employees})
