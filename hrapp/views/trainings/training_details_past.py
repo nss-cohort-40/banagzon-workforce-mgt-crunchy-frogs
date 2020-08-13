@@ -39,7 +39,6 @@ def get_training(training_id):
 
         return db_cursor.fetchone()
 
-@login_required
 def training_details_past(request, training_id):
     if request.method == 'GET':
         training = get_training(training_id)

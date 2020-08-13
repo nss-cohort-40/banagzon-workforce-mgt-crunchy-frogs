@@ -37,7 +37,6 @@ def get_computer(computer_id):
         return db_cursor.fetchone()
 
 
-@login_required
 def computer_details(request, computer_id):
     if request.method == 'GET':
         computer = get_computer(computer_id)
