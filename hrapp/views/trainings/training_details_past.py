@@ -37,4 +37,5 @@ def training_details_past(request, training_id):
     if request.method == 'GET':
         training = get_training(training_id)
         template_name = 'trainings/detail_past.html'
+        print(training)
         return render(request, template_name, {'training': training})
