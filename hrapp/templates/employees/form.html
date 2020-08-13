@@ -74,22 +74,22 @@
         {% if employee.id is None %}
             <option value="">None</option>
         {% endif %}
-             {% if employee.id is not None %}
-                <option selected value={{computer.id}}>{{computer.make}}</option>
-                <option value="">None</option>
-             {% for computer in computers %}
+        {% if employee.id is not None %}
+            <option selected value={{computer.id}}>{{computer.make}}</option>
+            <option value="">None</option>
+            {% for computer in computers %}
                 {% if computer.connection_id == None %}
-                    <option value="{{ computer.id }}">
-                        {{ computer.make }}</option>
+                <option value="{{ computer.id }}">
+                    {{ computer.make }}</option>
                 {% endif %}
             {% endfor %}
+        {% endif %}
+        {% for computer in departments_computers.computers %}
+            {% if computer.connection_id == None %}
+                <option value="{{ computer.id }}">
+                    {{ computer.make }}</option>
             {% endif %}
-            {% for computer in departments_computers.computers %}
-                {% if computer.connection_id == None %}
-                    <option value="{{ computer.id }}">
-                        {{ computer.make }}</option>
-                {% endif %}
-            {% endfor %}
+        {% endfor %}
         </select>
     </p>
     {% if employee.id is not None %}

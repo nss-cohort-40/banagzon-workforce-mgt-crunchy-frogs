@@ -67,6 +67,7 @@ def employee_edit_form(request, employee_id):
             EmployeeComputer.objects.filter(employee_id=employee[0].id)
             computer = EmployeeComputer.objects.filter(
                 employee_id=employee[0].id)
+            print(computer)
             computer = Computer.objects.filter(id=computer[0].computer_id)
             context = {
                 'employee': employee[0],
@@ -83,6 +84,6 @@ def employee_edit_form(request, employee_id):
                 'departments': departments,
                 'computers': get_computers(),
                 'start_date': str(employee[0].start_date),
-                'computer': None
+                'computer': ""
             }
         return render(request, template, context)
