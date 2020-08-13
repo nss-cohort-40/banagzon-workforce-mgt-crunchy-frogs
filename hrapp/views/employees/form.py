@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import sqlite3
 from ..connection import Connection
-from hrapp.models import Employee, Department, Computer
+from hrapp.models import Employee, Department, Computer, EmployeeComputer
 
 
 def get_departments():
@@ -60,14 +60,16 @@ def employee_edit_form(request, employee_id):
         employee = Employee.objects.filter(id=employee_id)
         departments = Department.objects.all()
         department = Department.objects.filter(id=employee[0].department_id)
-        computers = Computer.objects.all()
+        computer = EmployeeComputer.objects.filter(employee_id=employee[0].id)
+        computer = Computer.objects.filter(id=computer[0].computer_id)
         template = 'employees/form.html'
         context = {
             'employee': employee[0],
             'department': department[0],
             'departments': departments,
             'computers': get_computers(),
-            'start_date': str(employee[0].start_date)
+            'start_date': str(employee[0].start_date),
+            'computer': computer[0]
         }
 
         return render(request, template, context)
