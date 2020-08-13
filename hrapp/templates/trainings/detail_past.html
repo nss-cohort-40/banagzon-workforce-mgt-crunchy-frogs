@@ -8,6 +8,13 @@
         <p>Started: {{ training.start_date }}</p>
         <p>Ended: {{ training.end_date }}</p>
         <p>Max capacity: {{ training.capacity }}</p>
+
+        <p>Attendees:</p>
+        {% for each in employees %}
+            {% if each.first_name != None %}
+                <p>{{ each.first_name }} {{ each.last_name }}</p>
+            {% endif %}
+        {% endfor %}
     </section>
 
 {% endblock content %}
