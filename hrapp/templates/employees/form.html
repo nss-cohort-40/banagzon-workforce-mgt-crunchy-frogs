@@ -25,16 +25,32 @@
     </fieldset>
     <p>
         <label for="is_supervisor">Supervisor: </label>
+        {% if employee.id is None %}
+
         <select id="is_supervisor" type="text" name="is_supervisor">
             {% if employee.id is not None %}
-            <option selected value={{employee.is_supervisor}}>{{employee.is_supervisor}}</option>
-            <option value={{employee.is_supervisor|default:True}}>{{employee.is_supervisor|default:True}}</option>
+            
             {% endif %}
-            {% if employee.id is None %}
             <option value="0">No</option>
             <option value="1">Yes</option>
             {% endif %}
         </select>
+        {% if employee.id is not None %}
+            {% if employee.is_supervisor == False %}
+        <select id="is_supervisor" type="text" name="is_supervisor">
+            <option selected value={{employee.is_supervisor}}>{{employee.is_supervisor}}</option>
+            <option value={{employee.is_supervisor|default:True}}>{{employee.is_supervisor|default:True}}</option>
+        </select>
+            {% endif %}
+        {% endif %}
+        {% if employee.id is not None %}
+            {% if employee.is_supervisor == True %}
+        <select id="is_supervisor" type="text" name="is_supervisor">
+            <option selected value={{employee.is_supervisor}}>{{employee.is_supervisor}}</option>
+            <option value={{employee.is_supervisor|default:False}}>{{employee.is_supervisor|default:False}}</option>
+        </select>
+            {% endif %}
+        {% endif %}
     </p>
     <p>
         <label for="department_id">Department: </label>
