@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from hrapp.models import Employee, Department, Computer, EmployeeComputer, TrainingProgram, EmployeeTrainingProgram
 from ..connection import Connection
+import datetime
 
 
 def create_employee(cursor, row):
@@ -118,6 +119,38 @@ def employee_details(request, employee_id):
                 WHERE employee_id = ?
                 """,
                                   (
+                                      form_data['computer_id'], employee_id,
+                                  ))
+        elif (
+            "actual_method" in form_data
+            and form_data["actual_method"] == "PUT and POST"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
+
+                db_cursor.execute("""
+                UPDATE hrapp_employee
+                SET first_name = ?,
+                    last_name = ?,
+                    start_date = ?,
+                    is_supervisor = ?,
+                    department_id = ?
+                WHERE id = ?
+                """,
+                                  (
+                                      form_data['first_name'], form_data['last_name'],
+                                      form_data['start_date'], form_data['is_supervisor'],
+                                      form_data["department_id"], employee_id,
+                                  ))
+
+                db_cursor.execute("""
+                insert into hrapp_employeecomputer
+                values (?,?,?,?,?)
+                
+                """,
+                                  (
+                                      None, datetime.datetime.now(), datetime.datetime.now() +
+                                      datetime.timedelta(days=90),
                                       form_data['computer_id'], employee_id,
                                   ))
 

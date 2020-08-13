@@ -92,10 +92,13 @@
         {% endfor %}
         </select>
     </p>
-    {% if employee.id is not None %}
+    {% if employee.id is not None and computer.id is None %}
+        <input type="hidden" name="actual_method" value="PUT and POST">
+        <input type="submit" value="Update" />
+    {% elif employee.id is not None %}
         <input type="hidden" name="actual_method" value="PUT">
         <input type="submit" value="Update" />
-        {% else %}
+    {% else %}
     <input type="submit" value="Create"/>
      {% endif %}
 </form>

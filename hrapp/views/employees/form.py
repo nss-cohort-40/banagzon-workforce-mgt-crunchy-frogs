@@ -67,8 +67,8 @@ def employee_edit_form(request, employee_id):
             EmployeeComputer.objects.filter(employee_id=employee[0].id)
             computer = EmployeeComputer.objects.filter(
                 employee_id=employee[0].id)
-            print(computer)
-            computer = Computer.objects.filter(id=computer[0].computer_id)
+            # computer = Computer.objects.filter(id=computer[0].computer_id)
+            computer = EmployeeComputer.objects.filter(employee_id=employee_id)
             context = {
                 'employee': employee[0],
                 'department': department[0],
