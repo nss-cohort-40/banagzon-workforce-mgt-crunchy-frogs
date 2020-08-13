@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import sqlite3
+from django.contrib.auth.decorators import login_required
 from ..connection import Connection
 
 
@@ -38,7 +39,7 @@ def get_computers():
 
         return db_cursor.fetchall()
 
-
+@login_required
 def employee_form(request):
     if request.method == 'GET':
         departments_computers = {
