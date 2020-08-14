@@ -10,6 +10,7 @@
         <p>Max capacity: {{ training.capacity }}</p>
     </section>
 
+    {% if user.is_authenticated %}
     <section id="training-actions">
         <form action="{% url 'hrapp:training' training.id %}" method="POST">
             {% csrf_token %}
@@ -22,5 +23,6 @@
             <button>Edit</button>
         </form>
     </section>
+    {% endif %}
 
 {% endblock content %}

@@ -74,7 +74,6 @@ def get_employee(employee_id):
         return db_cursor.fetchone()
 
 
-@login_required
 def employee_details(request, employee_id):
     if request.method == 'GET':
         employee = get_employee(employee_id)

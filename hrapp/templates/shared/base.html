@@ -46,16 +46,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'hrapp:computer_list' %}">Computers</a>
                 </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'hrapp:logout' %}">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/accounts/login/">Login</a>
-                </li>
-                {% endif %}
             </ul>
+            <div class="navbar-text">
+                {% if user.is_authenticated %}
+                <button class="btn btn-outline-danger">
+                    <a class="nav-link" href="{% url 'hrapp:logout' %}">Logout</a>
+                </button>
+                {% else %}
+                <button class="btn btn-outline-success">
+                    <a class="nav-link" href="/accounts/login/">Login</a>
+                </button>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
@@ -68,15 +70,3 @@
 </body>
 
 </html>
-<!-- Given that a user wants to view or manage resources
-When the user is looking at any view in the application
-Then there should be a navigation bar at the top with the following items
-
-Employees
-Departments
-Computers
-Training Programs
-Login/Logout
-Given that a user wants to view a list of resources
-When the user click on Employees, Deparments, Computers, or Training Programs in the nav bar
-Then the user should be presented with the list view of the corresponding resource -->

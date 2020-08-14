@@ -20,9 +20,9 @@
 <p>Decommission on {{ computer.decommission_date }}</p>
 {% endif %}
 
-
+{% if user.is_authenticated %}
 <input type="submit" value="Delete" id="delete"/>
-
+{% endif %}
 
 <dialog id="deleteText">
         <div id="deleteMessage"></div>

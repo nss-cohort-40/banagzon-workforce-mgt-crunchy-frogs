@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 import sqlite3
+from django.contrib.auth.decorators import login_required
 from ..connection import Connection
 
 
@@ -34,7 +35,6 @@ def get_computer(computer_id):
         """, (computer_id,))
 
         return db_cursor.fetchone()
-
 
 
 def computer_details(request, computer_id):
