@@ -2,31 +2,66 @@
 
 {% block content %}
 
+
+{% if employee.id is not None %}
+<h3>Edit {{employee.first_name}} {{employee.last_name}}</h3>
+    <form action="{% url 'hrapp:employee' employee.id %}" method="post">
+{% else %}
 <h3>Add an Employee</h3>
 <form action="{% url 'hrapp:employee_list' %}" method="post">
+{% endif %}
     {% csrf_token %}
     <fieldset>
         <label for="first_name">First Name: </label>
-        <input id="first_name" type="text" name="first_name" value="">
+        <input id="first_name" type="text" name="first_name" value="{{ employee.first_name }}">
     </fieldset>
     <fieldset>
         <label for="last_name">Last Name: </label>
-        <input id="last_name" type="text" name="last_name" value="">
+        <input id="last_name" type="text" name="last_name" value="{{employee.last_name}}">
     </fieldset>
     <fieldset>
         <label for="start_date">Start Date: </label>
-        <input id="start_date" type="date" name="start_date" value="">
+        <input id="start_date" type="date" name="start_date" value="{{start_date}}">
     </fieldset>
     <p>
         <label for="is_supervisor">Supervisor: </label>
+        {% if employee.id is None %}
+
         <select id="is_supervisor" type="text" name="is_supervisor">
+            {% if employee.id is not None %}
+            
+            {% endif %}
             <option value="0">No</option>
             <option value="1">Yes</option>
+            {% endif %}
         </select>
+        {% if employee.id is not None %}
+            {% if employee.is_supervisor == False %}
+        <select id="is_supervisor" type="text" name="is_supervisor">
+            <option selected value={{employee.is_supervisor}}>{{employee.is_supervisor}}</option>
+            <option value={{employee.is_supervisor|default:True}}>{{employee.is_supervisor|default:True}}</option>
+        </select>
+            {% endif %}
+        {% endif %}
+        {% if employee.id is not None %}
+            {% if employee.is_supervisor == True %}
+        <select id="is_supervisor" type="text" name="is_supervisor">
+            <option selected value={{employee.is_supervisor}}>{{employee.is_supervisor}}</option>
+            <option value={{employee.is_supervisor|default:False}}>{{employee.is_supervisor|default:False}}</option>
+        </select>
+            {% endif %}
+        {% endif %}
     </p>
     <p>
         <label for="department_id">Department: </label>
         <select id="department_id" type="text" name="department_id">
+            {% if employee.id is not None %}
+            <option selected value={{department.id}}>{{department.dept_name}}</option>
+            {% for department in departments %}
+            <option value="{{ department.id }}">
+                {{ department.dept_name }}</option>
+            {% endfor %}
+            {% endif %}
             {% for department in departments_computers.departments %}
             <option value="{{ department.id }}">
                 {{ department.dept_name }}</option>
@@ -36,16 +71,45 @@
     <p>
         <label for="computer_id">Computer: </label>
         <select id="computer_id" type="text" name="computer_id">
+        {% if not computer.id and employee.id %}
+            <option selected value="">None</option>
+        {% for computer in computers %}
+            {% if computer.connection_id == None %}
+                <option value="{{ computer.id }}">
+                    {{ computer.make }}</option>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% if employee.id is None %}
             <option value="">None</option>
             {% for computer in departments_computers.computers %}
+            {% if computer.connection_id == None %}
+                <option value="{{ computer.id }}">
+                    {{ computer.make }}</option>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% if employee.id is not None and computer.id %} 
+            <option selected value={{computer.id}}>{{computer.make}}</option>
+            <option value="">None</option>
+            {% for computer in computers %}
                 {% if computer.connection_id == None %}
-                    <option value="{{ computer.id }}">
-                        {{ computer.make }}</option>
+                <option value="{{ computer.id }}">
+                    {{ computer.make }}</option>
                 {% endif %}
             {% endfor %}
+        {% endif %}
         </select>
     </p>
+    {% if employee.id is not None and computer.id is None %}
+        <input type="hidden" name="actual_method" value="PUT and POST">
+        <input type="submit" value="Update" />
+    {% elif employee.id is not None %}
+        <input type="hidden" name="actual_method" value="PUT">
+        <input type="submit" value="Update" />
+    {% else %}
     <input type="submit" value="Create"/>
+     {% endif %}
 </form>
 
 {% endblock content %}

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from hrapp.models import Employee, Department, Computer, EmployeeComputer, TrainingProgram, EmployeeTrainingProgram
 from ..connection import Connection
+import datetime
 
 
 def create_employee(cursor, row):
@@ -31,10 +32,12 @@ def create_employee(cursor, row):
 
 def get_training_programs(employee_id):
     training_programs_ids = []
-    training_programs_ids = EmployeeTrainingProgram.objects.filter(employee_id=employee_id)
+    training_programs_ids = EmployeeTrainingProgram.objects.filter(
+        employee_id=employee_id)
     training_programs = []
     for e in training_programs_ids:
-        training_program = TrainingProgram.objects.filter(id=e.training_program_id).values()
+        training_program = TrainingProgram.objects.filter(
+            id=e.training_program_id).values()
         for i in training_program:
             training_programs.append(i["title"])
 
@@ -42,11 +45,11 @@ def get_training_programs(employee_id):
 
 
 def get_employee(employee_id):
-        with sqlite3.connect(Connection.db_path) as conn:
-            conn.row_factory = create_employee
-            db_cursor = conn.cursor()
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory = create_employee
+        db_cursor = conn.cursor()
 
-            db_cursor.execute("""
+        db_cursor.execute("""
             select
                 e.id as e_id,
                 e.first_name as e_first_name,
@@ -68,7 +71,7 @@ def get_employee(employee_id):
             where e.id = ?
             """, (employee_id,))
 
-            return db_cursor.fetchone()
+        return db_cursor.fetchone()
 
 
 @login_required
@@ -83,3 +86,83 @@ def employee_details(request, employee_id):
         }
 
         return render(request, template, context)
+
+    elif request.method == 'POST':
+        form_data = request.POST
+
+        # Check if this POST is for editing an employee
+        if (
+            "actual_method" in form_data
+            and form_data["actual_method"] == "PUT"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
+
+                if form_data['computer_id'] == "":
+                    db_cursor.execute("""
+                    delete from hrapp_employeecomputer
+                    where employee_id = ?
+                    """, (employee_id,))
+
+                if form_data['computer_id'] != "":
+                    db_cursor.execute("""
+                    update hrapp_employeecomputer
+                    set computer_id = ?
+                    where employee_id = ?
+                    """, (form_data['computer_id'], employee_id,))
+
+                db_cursor.execute("""
+                UPDATE hrapp_employee
+                SET first_name = ?,
+                    last_name = ?,
+                    start_date = ?,
+                    is_supervisor = ?,
+                    department_id = ?
+                WHERE id = ?
+                """,
+                                  (
+                                      form_data['first_name'], form_data['last_name'],
+                                      form_data['start_date'], form_data['is_supervisor'],
+                                      form_data["department_id"], employee_id,
+                                  ))
+
+            return redirect(reverse('hrapp:employee_list'))
+        elif (
+            "actual_method" in form_data
+            and form_data["actual_method"] == "PUT and POST"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
+
+                db_cursor.execute("""
+                UPDATE hrapp_employee
+                SET first_name = ?,
+                    last_name = ?,
+                    start_date = ?,
+                    is_supervisor = ?,
+                    department_id = ?
+                WHERE id = ?
+                """,
+                                  (
+                                      form_data['first_name'], form_data['last_name'],
+                                      form_data['start_date'], form_data['is_supervisor'],
+                                      form_data["department_id"], employee_id,
+                                  ))
+
+                db_cursor.execute("""
+                    delete from hrapp_employeecomputer
+                    where employee_id = ?
+                """, (employee_id,))
+
+                db_cursor.execute("""
+                insert into hrapp_employeecomputer (assign_date, unassign_date, computer_id, employee_id)
+                values (?,?,?,?)
+                
+                """,
+                                  (
+                                      datetime.datetime.now(), datetime.datetime.now() +
+                                      datetime.timedelta(days=90),
+                                      form_data['computer_id'], employee_id
+                                  ))
+
+            return redirect(reverse('hrapp:employee_list'))

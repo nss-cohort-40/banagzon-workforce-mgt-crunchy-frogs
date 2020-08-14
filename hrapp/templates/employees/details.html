@@ -18,4 +18,8 @@
     <a href="{% url 'hrapp:assign_employee' employee.id %}">Assign {{ employee.first_name }} {{ employee.last_name }} to a new program</a>
     </div>
 </section>
+<form action="{% url 'hrapp:employee_edit_form' employee.id %}" method="GET">
+            {% csrf_token %}
+            <button>Edit</button>
+        </form>
 {% endblock content %}
