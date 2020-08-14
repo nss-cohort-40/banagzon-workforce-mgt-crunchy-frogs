@@ -54,36 +54,55 @@ def employee_form(request):
         return render(request, template, context)
 
 
-def employee_edit_form(request, employee_id):
+def get_employee_computer(employee_idd):
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
+        db_cursor.execute("""
+        select ec.id, ec.employee_id, c.make
+        from hrapp_employeecomputer ec
+            join hrapp_computer c on c.id = ec.computer_id
+        where employee_id = ?
+                """, (employee_idd,))
+
+        return db_cursor.fetchone()
+
+
+def employee_edit_form(request, employee_idd):
+    print('computer1')
     if request.method == 'GET':
-        employee = Employee.objects.filter(id=employee_id)
+        employee = Employee.objects.filter(id=employee_idd)
         departments = Department.objects.all()
         department = Department.objects.filter(id=employee[0].department_id)
-        computer = len(EmployeeComputer.objects.filter(
-            employee_id=employee[0].id))
+        computer = get_employee_computer(employee_idd)
+        # try:
+
+        #     computer = len(EmployeeComputer.objects.filter(
+        #         employee_id=employee_idd))
+        # except:
+        #     computer = 0
         template = 'employees/form.html'
-        if computer > 0:
-            EmployeeComputer.objects.filter(employee_id=employee[0].id)
-            computer = EmployeeComputer.objects.filter(
-                employee_id=employee[0].id)
-            # computer = Computer.objects.filter(id=computer[0].computer_id)
-            computer = EmployeeComputer.objects.filter(employee_id=employee_id)
-            context = {
-                'employee': employee[0],
-                'department': department[0],
-                'departments': departments,
-                'computers': get_computers(),
-                'start_date': str(employee[0].start_date),
-                'computer': computer[0]
-            }
-        else:
-            context = {
-                'employee': employee[0],
-                'department': department[0],
-                'departments': departments,
-                'computers': get_computers(),
-                'start_date': str(employee[0].start_date),
-                'computer': ""
-            }
+
+        # if computer > 0:
+        #     computer = EmployeeComputer.objects.filter(
+        #         employee_id=employee[0].id)
+        #     computer = Computer.objects.filter(id=computer[0].computer_id)
+        #     context = {
+        #         'employee': employee[0],
+        #         'department': department[0],
+        #         'departments': departments,
+        #         'computers': get_computers(),
+        #         'start_date': str(employee[0].start_date),
+        #         'computer': computer[0]
+        #     }
+        # else:
+        context = {
+            'employee': employee[0],
+            'department': department[0],
+            'departments': departments,
+            'computers': get_computers(),
+            'start_date': str(employee[0].start_date),
+            'computer': computer
+        }
         return render(request, template, context)

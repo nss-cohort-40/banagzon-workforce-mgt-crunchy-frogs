@@ -98,6 +98,19 @@ def employee_details(request, employee_id):
             with sqlite3.connect(Connection.db_path) as conn:
                 db_cursor = conn.cursor()
 
+                if form_data['computer_id'] == "":
+                    db_cursor.execute("""
+                    delete from hrapp_employeecomputer
+                    where employee_id = ?
+                    """, (employee_id,))
+
+                if form_data['computer_id'] != "":
+                    db_cursor.execute("""
+                    update hrapp_employeecomputer
+                    set computer_id = ?
+                    where employee_id = ?
+                    """, (form_data['computer_id'], employee_id,))
+
                 db_cursor.execute("""
                 UPDATE hrapp_employee
                 SET first_name = ?,
@@ -113,14 +126,7 @@ def employee_details(request, employee_id):
                                       form_data["department_id"], employee_id,
                                   ))
 
-                db_cursor.execute("""
-                UPDATE hrapp_employeecomputer
-                SET computer_id = ?
-                WHERE employee_id = ?
-                """,
-                                  (
-                                      form_data['computer_id'], employee_id,
-                                  ))
+            return redirect(reverse('hrapp:employee_list'))
         elif (
             "actual_method" in form_data
             and form_data["actual_method"] == "PUT and POST"
@@ -142,6 +148,11 @@ def employee_details(request, employee_id):
                                       form_data['start_date'], form_data['is_supervisor'],
                                       form_data["department_id"], employee_id,
                                   ))
+
+                db_cursor.execute("""
+                    delete from hrapp_employeecomputer
+                    where employee_id = ?
+                """, (employee_id,))
 
                 db_cursor.execute("""
                 insert into hrapp_employeecomputer
