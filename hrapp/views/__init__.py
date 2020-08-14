@@ -16,3 +16,4 @@ from .departments.department_details import department_details
 from .employees.form import employee_edit_form
 from .computers.form import computer_form
 from .computers.details import computer_details
+from .employees.assign_program import assign_employee

@@ -29,4 +29,6 @@ urlpatterns = [
          department_details, name='department_details'),
     path('employees/<employee_idd>/form/',
          employee_edit_form, name='employee_edit_form')
+    path('employees/<int:employee_id>/assign',
+         assign_employee, name='assign_employee')
 ]
