@@ -155,12 +155,12 @@ def employee_details(request, employee_id):
                 """, (employee_id,))
 
                 db_cursor.execute("""
-                insert into hrapp_employeecomputer
+                insert into hrapp_employeecomputer (assign_date, unassign_date, computer_id, employee_id)
                 values (?,?,?,?,?)
                 
                 """,
                                   (
-                                      None, datetime.datetime.now(), datetime.datetime.now() +
+                                      datetime.datetime.now(), datetime.datetime.now() +
                                       datetime.timedelta(days=90),
                                       form_data['computer_id'], employee_id,
                                   ))
