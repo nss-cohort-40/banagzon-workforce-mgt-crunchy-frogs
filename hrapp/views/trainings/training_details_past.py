@@ -2,27 +2,34 @@ import sqlite3
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from hrapp.models import TrainingProgram
+from hrapp.models import TrainingProgram, Employee
 from ..connection import Connection
 
+def get_training_employees(training_id):
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-def create_training(cursor, row):
-    _row = sqlite3.Row(cursor, row)
+        db_cursor.execute("""
+        SELECT
+            t.id training_id,
+            et.id,
+            et.employee_id,
+            et.training_program_id,
+            e.id,
+            e.first_name,
+            e.last_name
+        FROM hrapp_trainingprogram t
+        LEFT JOIN hrapp_employeetrainingprogram et ON et.training_program_id = t.id
+        LEFT JOIN hrapp_employee e ON et.employee_id = e.id
+        WHERE t.id = ?
+        """, (training_id,))
 
-    training = TrainingProgram()
-    training.id = _row["training_id"]
-    training.title = _row["title"]
-    training.description = _row["description"]
-    training.start_date = _row["start_date"]
-    training.end_date = _row["end_date"]
-    training.capacity = _row["capacity"]
-
-    return training
-
+        return db_cursor.fetchall()
 
 def get_training(training_id):
     with sqlite3.connect(Connection.db_path) as conn:
-        conn.row_factory = create_training
+        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -42,5 +49,6 @@ def get_training(training_id):
 def training_details_past(request, training_id):
     if request.method == 'GET':
         training = get_training(training_id)
+        employees = get_training_employees(training_id)
         template_name = 'trainings/detail_past.html'
-        return render(request, template_name, {'training': training})
+        return render(request, template_name, {'training': training, 'employees': employees})

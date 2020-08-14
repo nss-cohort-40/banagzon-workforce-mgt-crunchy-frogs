@@ -15,7 +15,7 @@
             <p>{{ training_program.title }}</p>
         {% endfor %}
         </ul>
-    
+    <a href="{% url 'hrapp:assign_employee' employee.id %}">Assign {{ employee.first_name }} {{ employee.last_name }} to a new program</a>
     </div>
 </section>
 {% endblock content %}
